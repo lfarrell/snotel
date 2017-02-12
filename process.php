@@ -1,7 +1,7 @@
 <?php
 $files = scandir("raw_data");
 $elevation = "";
-$headers = ["swe", "temp_avg", "year", "month", "state", "elevation", "station_id"];
+$headers = ["swe", "temp_avg", "year", "month", "day", "state", "elevation", "station_id"];
 
 foreach($files as $file) {
     if(is_dir($file)) continue;
@@ -24,11 +24,16 @@ foreach($files as $file) {
                 $year_parts = preg_split("/-/", $data[0]);
                 $year = $year_parts[0];
                 $month = $year_parts[1];
+                $day = $year_parts[2];
 
                 $state = $file_parts[0];
 
-                if($year < 2017 && $month < 7 && $data[1] != "" && $data[5] != "") {
-                    fputcsv($fh, [trim($data[1]), trim($data[5]), $year, $month, $state, $elevation, $station_id]);
+                if($year >= 2000 && $year < 2017 && $month < 7 && $data[1] != ""
+                    && ceil($data[1]) > 0 && $data[5] != "" && $data[5] < 100) {
+
+                    if($state == "OR" && $elevation == 10) continue;
+                    fputcsv($fh, [trim($data[1]), trim($data[5]), $year, $month, $day, $state, $elevation, $station_id]);
+
                 }
             }
         }
@@ -38,25 +43,3 @@ foreach($files as $file) {
 
     echo $file . " processed\n";
 }
-
-
-$processed_files = scandir("processed_data");
-$ft = fopen("all.csv", "wb");
-fputcsv($ft, $headers);
-
-foreach($processed_files as $file) {
-    if(is_dir($file)) continue;
-
-    if (($handle = fopen("processed_data/" . $file, "r")) !== FALSE) {
-        while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
-            if(preg_match("/^\d/", $data[0])) {
-                fputcsv($ft, $data);
-            }
-        }
-        fclose($handle);
-    }
-
-    echo $file . " processed\n";
-}
-
-fclose($ft);

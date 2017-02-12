@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="description" content="Visualization of the Snow Levels of the Western United States" />
+    <meta name="keywords" content="Climate Change,Drought,Visualization,Snow,Western Snow,
+    California Snow Visualizations,California" />
+    <title>Snows of the West</title>
+    <link href="https://fonts.googleapis.com/css?family=Abhaya+Libre|Alegreya|Taviraj" rel="stylesheet">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<div class="container-fluid">
+    <div id="note" class="row">
+        <p id="load" class="text-center">Loading ...</p>
+    </div>
+    <div class="row hide">
+        <div class="col-xs-12 col-sm-12 col-lg-12">
+            <h1 class="text-center">Snows of the West</h1>
+            <h3 class="text-center">Snowpack &amp; Water in the Western United States</h3>
+        </div>
+    </div>
+    <div class="row charts opaque">
+        <div class="col-xs-12 col-offset-sm-1 col-sm-10 col-lg-offset-1 col-lg-10">
+            <div class="col-xs-12 col-offset-sm-1 col-sm-10 col-lg-offset-1 col-lg-10">
+                <p>Snow is vital to the environmental health of the western United States. Unlike rainfall, it doesn't
+                    come as one burst that's here and then quickly gone. Instead, it tends to accrue over the winter and slowly
+                    melt as the temperatures rise in the spring. The melt typically continues into the early summer, providing
+                    a steady, consistent level of water in mountain watersheds. This is particularly important for states on the
+                    Pacific coast, which receive very little summer rainfall.</p>
+                <p>Snow comes in a variety of forms. It can be light and airy, almost dry, or it can heavy and dense. For example,
+                    light, fluffy snow that measures four feet deep might actually have the
+                    same volume of water as heavier, denser snow that is two feet deep.To account
+                    for this variation a measure called
+                    <a href="http://www.nrcs.usda.gov/wps/portal/nrcs/detail/or/snow/?cid=nrcs142p2_046155"
+                       target="_blank">snow water equivalence</a> is used to normalize the amount of liquid water
+                    in a given level of snow.</p>
+                <p>Compare the average snow/water and temperature levels by year and elevation. The general trend is towards drier
+                    conditions, but wet years are interspersed with drier years. Notice that 2011 was a very wet year
+                    across all elevations, while 2015 was extremely dry. Also, snow levels vary a great deal by state. States
+                such as Arizona and New Mexico, which have warmer clients receive far less snow and what snow that does fall
+                is at higher elevations. While the Pacific Northwest, Washington and Oregon, receives a tremendous amount of
+                winter moisture at elevation levels far lower than elsewhere in the west.</p>
+                <p>This visualization makes use of <a href="https://en.wikipedia.org/wiki/SNOTEL">SNOTEL</a> data, a series
+                of automated weather stations across the American west that measure such things as snow water content and air temperature.
+                It does not include manually collected <a href="https://www.wcc.nrcs.usda.gov/snotel/snowcourse_brochure.pdf">Snow Course</a> survey data or data collected by state level snow surveys.</p>
+            </div>
+        </div>
+
+        <div id="temp-graphs" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div id="year-month" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <h2 class="text-center"><span id="year-note">Water Average</span> by Year (in inches)</h2>
+                <div class="col-xs-12 col-md-12 col-sm-6 col-lg-12">
+                    <h3>Temperature (degrees Fahrenheit)</h3>
+                    <svg id="year-month-legend-temp" />
+                </div>
+                <div class="col-xs-12 col-md-12 col-sm-6 col-lg-12">
+                    <h3>Snow/Water Equivalence (inches)</h3>
+                    <svg id="year-month-legend" />
+                </div>
+            </div>
+            <div id="el-year-month" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <h2 class="text-center"><span id="states_cal-note">Water Average</span> by Date (in inches)</h2>
+                <div class="col-xs-12 col-md-12 col-sm-6 col-lg-12">
+                    <h3>Temperature (degrees Fahrenheit)</h3>
+                    <svg id="el-year-month-legend-temp" />
+                </div>
+                <div class="col-xs-12 col-md-12 col-sm-6 col-lg-12">
+                    <h3>Snow/Water Equivalence (inches)</h3>
+                    <svg id="el-year-month-legend" />
+                </div>
+            </div>
+            <div id="states" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <h2 class="text-center"><span>Water Average</span> by State (in inches)</h2>
+                <div class="col-xs-12 col-md-12 col-sm-6 col-lg-12">
+                    <h3>Temperature (degrees Fahrenheit)</h3>
+                    <svg id="states-legend-temp" />
+                </div>
+                <div class="col-xs-12 col-md-12 col-sm-6 col-lg-12">
+                    <h3>Snow/Water Equivalence (inches)</h3>
+                    <svg id="states-legend" />
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="row col-sm-12 col-lg-12 hide">
+        <footer>
+            <ul class="list-unstyled">
+                <li><a href="../index.php">Other Visualizations</a></li>
+                <li><a href="../western_water">Western Water</a></li>
+                <li><a href="mailto:farrelldlfarrell@gmail.com">Email</a></li>
+                <li><a href="https://twitter.com/farrelldlfarrel">Twitter</a></li>
+            </ul>
+        </footer>
+    </div>
+    <div class=" row col-sm-12 col-lg-12 hide">
+        <div class="col-md-offset-1 subfooter">
+            <h3 class="text-center">Data Sources</h3>
+            <ul class="list-unstyled text-center">
+                <li><a href="https://www.wcc.nrcs.usda.gov/snow/">USDA - Natural Resources Conservation Center</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.1/lodash.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.4.4/d3.min.js" charset="utf-8"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.21.0/d3-legend.js"></script>
+<script src="js/assets/d3-jetpack-v4.min.js"></script>
+<script src="js/assets/swoopy-drag/swoopy-drag.min.js"></script>
+<script src="js/custom.min.js"></script>
+<script type="text/javascript">
+ /*   var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-47256145-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })(); */
+</script>
+</body>
+</html>
