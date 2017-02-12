@@ -2,7 +2,8 @@ d3.queue()
     .defer(d3.csv,'web_files/grouped_0.csv')
     .defer(d3.csv,'web_files/grouped_2.csv')
     .defer(d3.csv,'web_files/grouped_3.csv')
-    .await(function(error, el_year, el_year_month, state_el_year) {
+    .defer(d3.json,'js/western_us.geojson')
+    .await(function(error, el_year, el_year_month, state_el_year, map) {
 
         var margins = {top: 25, right: 40, bottom: 50, left: 75};
         var temp_colors = ['#a50026','#d73027','#f46d43','#fdae61','#fee090','#ffffbf','#e0f3f8','#abd9e9','#74add1','#4575b4','#313695'];
@@ -86,6 +87,8 @@ d3.queue()
             $("#states").append("div")
                 .attr("class", "graph")
                 .attr("id", "graphed" + i);
+
+            drawMap("#graphed" + i, 100, window.innerWidth, state);
 
             $("#graphed" + i)
                 .append("h2")
@@ -229,7 +232,7 @@ d3.queue()
             }
 
         });
-        
+
         function build(data, selector, max) {
             var offset = (max > 5 || full_width < 500) ? 0 : 10;
             var which_size = (max > 5) ? sizing : [1, 3];
@@ -387,7 +390,7 @@ d3.queue()
                 .y(function(d){ return yScale(d.yVal); })
                 .draggable(0);
 
-            swoopy.annotations(annotations); console.log(annotations)
+            swoopy.annotations(annotations);
 
             $(selector).append("g.annotations").call(swoopy);
         }
@@ -522,6 +525,56 @@ d3.queue()
                 .call(legend);
 
             return svg;
+        }
+
+        function drawMap(selector, height, width, state) {
+            var mover = window.innerWidth / 2;
+            var map_svg = $(selector).append('svg')
+                .attr("vector-effect", "non-scaling-stroke")
+                .append('g');
+
+            var scale = 1,
+                projection = d3.geoAlbersUsa()
+                    .scale(scale)
+                    .translate([0,0]);
+
+            var path = d3.geoPath().projection(projection);
+            var bounds = path.bounds(map);
+            scale = .95 / Math.max((bounds[1][0] - bounds[0][0]) / width, (bounds[1][1] - bounds[0][1]) / height);
+            var translation = [(width - scale * (bounds[1][0] + bounds[0][0])) / 2 -35,
+                (height - scale * (bounds[1][1] + bounds[0][1])) / 2];
+
+            projection = d3.geoAlbersUsa().scale(scale).translate(translation);
+            path = path.projection(projection);
+
+            $(selector + " svg").attr('height', height)
+                .attr('width', width)
+                .attr('class', 'map');
+
+            var map_draw = map_svg.selectAll("path")
+                .data(map.features);
+
+            map_draw.enter()
+                .append("path")
+                .merge(map_draw)
+                .attr("d", path)
+                .style("stroke", function(d) {
+                    if(state_list[state] === d.properties.name) {
+                        return 'orange';
+                    }
+                })
+                .style("opacity", function(d) {
+                    if(state_list[state] === d.properties.name) {
+                        return .8;
+                    }
+                })
+                .style("fill", function(d) {
+                    if(state_list[state] === d.properties.name) {
+                        return 'orange';
+                    }
+                });
+
+            map_draw.exit().remove()
         }
 
         function monthWord(m) {
